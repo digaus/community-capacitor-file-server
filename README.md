@@ -1,1 +1,0 @@
-# community-capacitor-file-server
