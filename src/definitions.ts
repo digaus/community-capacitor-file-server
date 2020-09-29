@@ -6,4 +6,6 @@ declare module '@capacitor/core' {
 
 export interface FileServerPlugin {
   start(options: { path: string }): Promise<{ ip: string | null }>;
+  stop(): Promise<void>;
+
 }
