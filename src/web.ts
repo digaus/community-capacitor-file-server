@@ -13,6 +13,9 @@ export class FileServerWeb extends WebPlugin implements FileServerPlugin {
     console.log('start', options);
     return { ip: null };
   }
+  async stop(): Promise<void> {
+    return;
+  }
 }
 
 const FileServer = new FileServerWeb();

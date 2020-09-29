@@ -11,7 +11,11 @@ public class FileServer: CAPPlugin {
     @objc func start(_ call: CAPPluginCall) {
         let value = call.getString("path") ?? ""
         call.success([
-            "up": value
+            "ip": value
         ])
+    }
+
+    @objc func stop(_ call: CAPPluginCall) {
+        call.success()
     }
 }
