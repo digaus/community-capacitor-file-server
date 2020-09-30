@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.util.Log;
 
 import com.getcapacitor.Bridge;
 import com.getcapacitor.JSObject;
@@ -33,8 +34,9 @@ public class FileServerService {
     }
 
     public void startServer(PluginCall call) {
+        String path = call.getString("path").replace("file:/", "");
         if (this.nanoHTTPDServer == null) {
-            this.nanoHTTPDServer = new NanoHTTPDServer(8080, call.getString("path"));
+            this.nanoHTTPDServer = new NanoHTTPDServer(8080, path);
             try {
                 this.nanoHTTPDServer.start();
                 this.getIP(call);
