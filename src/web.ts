@@ -9,7 +9,7 @@ export class FileServerWeb extends WebPlugin implements FileServerPlugin {
     });
   }
 
-  async start(options: { path: string, port: number }): Promise<{ ip: string | null }> {
+  async start(options: { path: string, port?: number }): Promise<{ ip: string | null }> {
     console.log('start', options);
     return { ip: null };
   }

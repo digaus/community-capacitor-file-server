@@ -32,8 +32,10 @@ public class FileServerService {
 
     public void startServer(PluginCall call) {
         String path = call.getString("path").replace("file:/", "");
-        int port = call.getInt("port");
-
+        Integer port = call.getInt("port");
+        if (port == null) {
+            port = 8080;
+        }
         if (this.nanoHTTPDServer == null) {
             this.nanoHTTPDServer = new NanoHTTPDServer(path, port);
             try {
@@ -44,6 +46,8 @@ public class FileServerService {
                 this.nanoHTTPDServer = null;
                 call.reject("ERROR_STARTING_SERVER");
             }
+        } else {
+            call.reject("ERROR_SERVER_ALREADY_RUNNING");
         }
     }
 

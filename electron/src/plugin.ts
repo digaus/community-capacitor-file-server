@@ -21,13 +21,13 @@ export class FileServerElectron extends WebPlugin implements FileServerPlugin {
     this.RemoteRef = remote;
   }
 
-  async start(options: { path: string, port: number }): Promise<{ ip: string | null }> {
+  async start(options: { path: string, port?: number }): Promise<{ ip: string | null }> {
     const fileServer: any = new this.StaticServer.Server(options.path);
     this.server = this.Http.createServer((request: any, response: any) => {
       request.addListener('end', () => {
         fileServer.serve(request, response);
       }).resume();
-    }).listen(options.port);
+    }).listen(options.port || 8080);
     var ifs = this.Os.networkInterfaces();
     var ip = Object.keys(ifs)
       .map(x => ifs[x].filter((x: any) => x.family === 'IPv4' && !x.internal)[0])
