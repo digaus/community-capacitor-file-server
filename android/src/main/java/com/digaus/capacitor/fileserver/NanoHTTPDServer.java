@@ -15,7 +15,7 @@ import fi.iki.elonen.NanoHTTPD;
 public class NanoHTTPDServer extends NanoHTTPD {
 
     String basePath;
-    public NanoHTTPDServer(int port, String basePath) {
+    public NanoHTTPDServer(String basePath, int port) {
         super(port);
         this.basePath = basePath;
     }
