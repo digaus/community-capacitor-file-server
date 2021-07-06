@@ -44,6 +44,8 @@ public class FileServerService {
                 this.nanoHTTPDServer = null;
                 call.reject("ERROR_STARTING_SERVER");
             }
+        } else {
+            this.getIP(call);
         }
     }
 
