@@ -47,7 +47,7 @@ public class FileServerService {
                 call.reject("ERROR_STARTING_SERVER");
             }
         } else {
-            call.reject("ERROR_SERVER_ALREADY_RUNNING");
+            this.getIP(call);
         }
     }
 
