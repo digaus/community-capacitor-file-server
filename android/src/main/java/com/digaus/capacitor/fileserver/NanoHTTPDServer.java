@@ -8,7 +8,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
-import java.util.Set;
 
 import fi.iki.elonen.NanoHTTPD;
 
@@ -61,8 +60,8 @@ public class NanoHTTPDServer extends NanoHTTPD {
 
             // Change return code and add Content-Range header when skipping is
             // requested
-            long fileLen = file.length();
 
+            long fileLen = file.length();
             if (headerIfRangeMissingOrMatching && range != null && startFrom >= 0 && startFrom < fileLen) {
                 // range request that matches current etag
                 // and the startFrom of the range is satisfiable
@@ -103,13 +102,13 @@ public class NanoHTTPDServer extends NanoHTTPD {
                     // full-file-fetch request
                     // would return entire file
                     // respond with not-modified
+
                     res = newFixedLengthResponse(Response.Status.NOT_MODIFIED, mime, "");
                     res.addHeader("ETag", etag);
                 } else if (!headerIfRangeMissingOrMatching && headerIfNoneMatchPresentAndMatching) {
                     // range request that doesn't match current etag
                     // would return entire (different) file
                     // respond with not-modified
-
                     res = newFixedLengthResponse(Response.Status.NOT_MODIFIED, mime, "");
                     res.addHeader("ETag", etag);
                 } else {
@@ -151,13 +150,6 @@ public class NanoHTTPDServer extends NanoHTTPD {
             Uri uri = Uri.fromFile(file);
             String mime = getMimeType(uri.toString());
             response = serveFile(session.getHeaders(), file, mime);
-            Set<String> keys = session.getHeaders().keySet();
-            for ( String key : keys) {
-                response.addHeader(
-                        key,
-                        session.getHeaders().get(key)
-                );
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
