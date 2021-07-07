@@ -1,6 +1,5 @@
 import Foundation
 import Capacitor
-
 /**
  * Please read the Capacitor iOS Plugin Development Guide
  * here: https://capacitorjs.com/docs/plugins/ios
@@ -9,9 +8,9 @@ import Capacitor
 public class FileServer: CAPPlugin {
 
     let webServer: GCDWebServer = GCDWebServer()
-    let basePath: String
+    var basePath: String = ""
 
-    func load() {
+    public override func load() {
         self.initHTTPRequestHandlers()
     }
    
@@ -26,8 +25,9 @@ public class FileServer: CAPPlugin {
     }
     func processRequest(request: GCDWebServerRequest, completionBlock: GCDWebServerCompletionBlock) {
         let dataRequest = request as! GCDWebServerDataRequest
-        let path = dataRequest.url.path
-        let response = fileRequest(request: request, path: (self.basePath + path) as! String)
+        let path = self.basePath + dataRequest.url.path
+        let response = fileRequest(request: request, path: path )
+        completionBlock(response)
     }
 
     func fileRequest(request: GCDWebServerRequest, path: String) -> GCDWebServerResponse {
@@ -44,11 +44,20 @@ public class FileServer: CAPPlugin {
     }
 
     @objc func start(_ call: CAPPluginCall) {
-        self.basePath = call.getString("path") ?? ""
+        self.basePath = call.getString("path") ?? "/"
+        self.basePath = self.basePath.replacingOccurrences(of: "file://", with: "")
+        self.basePath.remove(at: self.basePath.index(before: self.basePath.endIndex))
         let port = call.getInt("port") ?? 8080
 
         if self.webServer.isRunning{
-            call.reject("ERROR_SERVER_ALREADY_RUNNING")
+            let address = getWiFiAddress()
+            guard let myString = address, !myString.isEmpty else {
+                call.reject("ERROR_NO_WIFI_IP_AVAILABLE");
+                return
+            } 
+            call.success([
+                "ip": address!
+            ])
             return
         }
 
@@ -58,8 +67,6 @@ public class FileServer: CAPPlugin {
             call.reject(error.localizedDescription)
             return
         }
-        let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK)
-
         let address = getWiFiAddress()
         guard let myString = address, !myString.isEmpty else {
             call.reject("ERROR_NO_WIFI_IP_AVAILABLE");
