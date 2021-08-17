@@ -45,7 +45,7 @@
     "ios/",
     "android/",
     "electron/",
-    "FileServer.podspec"
+    "CapacitorCommunityFileServer.podspec"
   ],
   "keywords": [
     "capacitor",
