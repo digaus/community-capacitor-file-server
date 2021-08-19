@@ -1,22 +1,28 @@
 package com.digaus.capacitor.fileserver;
 
 import android.Manifest;
-import android.content.pm.PackageManager;
 import android.os.Build;
 
-import com.getcapacitor.NativePlugin;
+import com.getcapacitor.PermissionState;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
+import com.getcapacitor.annotation.CapacitorPlugin;
+import com.getcapacitor.annotation.Permission;
+import com.getcapacitor.annotation.PermissionCallback;
 
-@NativePlugin(
-    requestCodes={FileServer.REQUEST_ACCESS_FINE_LOCATION}
+@CapacitorPlugin(
+    name = "FileServer",
+    permissions = {
+        @Permission(
+            alias = "fineLocation",
+            strings = { Manifest.permission.ACCESS_FINE_LOCATION }
+        ),
+    }
 )
 public class FileServer extends Plugin {
 
     private static final int API_VERSION = Build.VERSION.SDK_INT;
-
-    static final int REQUEST_ACCESS_FINE_LOCATION = 8001;
 
     FileServerService fileServerService;
 
@@ -30,9 +36,8 @@ public class FileServer extends Plugin {
 
     @PluginMethod
     public void start(PluginCall call) {
-        if (API_VERSION >= 23 && !hasPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
-            saveCall(call);
-            pluginRequestPermission(Manifest.permission.ACCESS_FINE_LOCATION, REQUEST_ACCESS_FINE_LOCATION);
+        if (API_VERSION >= 23 && getPermissionState("fineLocation") != PermissionState.GRANTED) {
+            requestPermissionForAlias("fineLocation", call, "accessFineLocation");
         } else {
             this.fileServerService.startServer(call);
         }
@@ -44,27 +49,16 @@ public class FileServer extends Plugin {
         this.fileServerService.stopServer(call);
     }
 
-    
-    @Override
-    protected void handleRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-
-        super.handleRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        PluginCall savedCall = getSavedCall();
-        if (savedCall == null) {
-            return;
-        }
-
-        for(int result : grantResults) {
-            if (result == PackageManager.PERMISSION_DENIED) {
-                savedCall.error("User denied permission");
-                return;
+    @PermissionCallback
+    private void accessFineLocation(PluginCall call) {
+        if (getPermissionState("fineLocation") == PermissionState.GRANTED) {
+            if (call.getMethodName().equals("start")) {
+                this.fileServerService.startServer(call);
             }
+        } else {
+            call.reject("User denied permission");
         }
-        if (savedCall.getMethodName().equals("start")) {
-            this.fileServerService.startServer(savedCall);
-        }
-
     }
+
 
 }

@@ -15,5 +15,5 @@ export declare class FileServerElectron extends WebPlugin implements FileServerP
     }>;
     stop(): Promise<void>;
 }
-declare const FileServer: FileServerElectron;
+declare const FileServer: FileServerPlugin;
 export { FileServer };

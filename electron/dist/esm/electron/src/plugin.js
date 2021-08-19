@@ -1,5 +1,5 @@
 import { __awaiter } from "tslib";
-import { WebPlugin } from '@capacitor/core';
+import { registerPlugin, WebPlugin } from '@capacitor/core';
 const { remote } = require('electron');
 export class FileServerElectron extends WebPlugin {
     constructor() {
@@ -40,8 +40,8 @@ export class FileServerElectron extends WebPlugin {
         });
     }
 }
-const FileServer = new FileServerElectron();
+const FileServer = registerPlugin('FileServer', {
+    electron: () => import('./plugin').then(m => new m.FileServerElectron()),
+});
 export { FileServer };
-import { registerWebPlugin } from '@capacitor/core';
-registerWebPlugin(FileServer);
 //# sourceMappingURL=plugin.js.map

@@ -55,7 +55,7 @@ public class FileServer: CAPPlugin {
                 call.reject("ERROR_NO_WIFI_IP_AVAILABLE");
                 return
             } 
-            call.success([
+            call.resolve([
                 "ip": address!
             ])
             return
@@ -72,7 +72,7 @@ public class FileServer: CAPPlugin {
             call.reject("ERROR_NO_WIFI_IP_AVAILABLE");
             return
         } 
-        call.success([
+        call.resolve([
             "ip": address!
         ])
     }
@@ -81,7 +81,7 @@ public class FileServer: CAPPlugin {
         if self.webServer.isRunning {
             self.webServer.stop()
         }
-        call.success()
+        call.resolve()
     }
 
 

@@ -1,8 +1,6 @@
-import { WebPlugin } from '@capacitor/core';
-import { FileServerPlugin } from './definitions';
-const { remote } = require('electron');
+import type { FileServerPlugin } from '../../src/definitions';
 
-export class FileServerElectron extends WebPlugin implements FileServerPlugin {
+export class FileServer implements FileServerPlugin {
   Os: any = null;
   Http: any = null;
   StaticServer: any = null;
@@ -11,14 +9,10 @@ export class FileServerElectron extends WebPlugin implements FileServerPlugin {
   server: any = null;
 
   constructor() {
-    super({
-      name: 'FileServer',
-      platforms: ['electron'],
-    });
     this.Os = require('os');
     this.Http = require('http');
     this.StaticServer = require('node-static');
-    this.RemoteRef = remote;
+    this.RemoteRef = require('electron');
   }
 
   async start(options: { path: string, port?: number }): Promise<{ ip: string | null }> {
@@ -41,9 +35,3 @@ export class FileServerElectron extends WebPlugin implements FileServerPlugin {
     });
   }
 }
-
-const FileServer = new FileServerElectron();
-export { FileServer };
-import { registerWebPlugin } from '@capacitor/core';
-
-registerWebPlugin(FileServer);

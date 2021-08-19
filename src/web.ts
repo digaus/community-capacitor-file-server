@@ -17,10 +17,3 @@ export class FileServerWeb extends WebPlugin implements FileServerPlugin {
     return;
   }
 }
-
-const FileServer = new FileServerWeb();
-
-export { FileServer };
-
-import { registerWebPlugin } from '@capacitor/core';
-registerWebPlugin(FileServer);

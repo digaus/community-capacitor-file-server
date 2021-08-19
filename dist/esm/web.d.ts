@@ -10,5 +10,3 @@ export declare class FileServerWeb extends WebPlugin implements FileServerPlugin
     }>;
     stop(): Promise<void>;
 }
-declare const FileServer: FileServerWeb;
-export { FileServer };
