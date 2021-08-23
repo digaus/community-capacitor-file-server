@@ -39,7 +39,6 @@ class FileServer {
         const fileServer = new this.StaticServer.Server(options.path);
         this.server = this.Http.createServer((request, response) => {
             request.addListener('end', () => {
-                console.log(request);
                 fileServer.serve(request, response);
             }).resume();
         }).listen(options.port || 8080);
