@@ -2,9 +2,10 @@
   "name": "@capacitor-community/file-server",
   "version": "0.0.1",
   "description": "Capacitor File Server Plugin",
-  "main": "dist/plugin.js",
+  "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
+  "unpkg": "dist/plugin.js",
   "scripts": {
     "lint": "npm run prettier -- --check && npm run swiftlint -- lint",
     "prettier": "prettier \"**/*.{css,html,ts,js,java}\"",
@@ -24,6 +25,7 @@
     "@ionic/prettier-config": "^1.0.0",
     "@ionic/swiftlint-config": "^1.0.0",
     "@rollup/plugin-commonjs": "^19.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.0",
     "@types/node": "^12.0.0",
     "electron": "^10.1.2",
     "prettier": "^2.0.5",
@@ -72,5 +74,8 @@
   },
   "dependencies": {
     "node-static": "^0.7.11"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

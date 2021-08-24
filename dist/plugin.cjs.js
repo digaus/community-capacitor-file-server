@@ -6,6 +6,7 @@ var core = require('@capacitor/core');
 
 const FileServer = core.registerPlugin('FileServer', {
     web: () => Promise.resolve().then(function () { return web; }).then(m => new m.FileServerWeb()),
+    electron: () => window.CapacitorCustomPlatform.plugins.FileServer,
 });
 
 class FileServerWeb extends core.WebPlugin {

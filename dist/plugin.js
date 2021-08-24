@@ -1,8 +1,9 @@
-var capacitorDevice = (function (exports, core) {
+var capacitorFileServer = (function (exports, core) {
     'use strict';
 
     const FileServer = core.registerPlugin('FileServer', {
         web: () => Promise.resolve().then(function () { return web; }).then(m => new m.FileServerWeb()),
+        electron: () => window.CapacitorCustomPlatform.plugins.FileServer,
     });
 
     class FileServerWeb extends core.WebPlugin {
