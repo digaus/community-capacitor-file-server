@@ -1,35 +1,34 @@
 import type { FileServerPlugin } from '../../src/definitions';
+import { networkInterfaces } from 'os';
+import { createServer, Server } from 'http';
+import { Server as StaticServer } from 'node-static';
 
 export class FileServer implements FileServerPlugin {
-  Os: any = null;
-  Http: any = null;
-  StaticServer: any = null;
-
-  server: any = null;
-
-  constructor() {
-    this.Os = require('os');
-    this.Http = require('http');
-    this.StaticServer = require('node-static');
-  }
+  server: Server = null;
 
   async start(options: { path: string, port?: number }): Promise<{ ip: string | null }> {
-    const fileServer: any = new this.StaticServer.Server(options.path);
-    this.server = this.Http.createServer((request: any, response: any) => {
+    const fileServer: any = new StaticServer(options.path);
+    this.server = createServer((request: any, response: any) => {
       request.addListener('end', () => {
         fileServer.serve(request, response);
       }).resume();
     }).listen(options.port || 8080);
-    var ifs = this.Os.networkInterfaces();
+    var ifs = networkInterfaces();
     var ip = Object.keys(ifs)
       .map(x => ifs[x].filter((x: any) => x.family === 'IPv4' && !x.internal)[0])
       .filter(x => x)[0].address;
+    console.log('this.server:');
+    console.log(this.server.listening);
     return { ip };
   }
 
   async stop(): Promise<void> {
     return new Promise<void>((resolve: () => void) => {
-      this.server.close().once('close', () => resolve());
+      this.server.close().once('close', () => {
+        console.log('this.server:');
+        console.log(this.server.listening);
+        resolve();
+      });
     });
   }
 }
