@@ -42,9 +42,10 @@
     "@capacitor/core": "^3.1.2"
   },
   "files": [
+    "android/src/main/",
+    "android/build.gradle",
     "dist/",
-    "ios/",
-    "android/",
+    "ios/Plugin/",
     "electron/",
     "CapacitorCommunityFileServer.podspec"
   ],

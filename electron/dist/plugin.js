@@ -2,9 +2,9 @@
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
-var require$$0 = require('os');
-var require$$1 = require('http');
-var require$$2 = require('node-static');
+var require$$0 = require('http');
+var require$$1 = require('node-static');
+var require$$2 = require('os');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
@@ -15,9 +15,9 @@ var require$$2__default = /*#__PURE__*/_interopDefaultLegacy(require$$2);
 var src = {};
 
 Object.defineProperty(src, "__esModule", { value: true });
-const os_1 = require$$0__default['default'];
-const http_1 = require$$1__default['default'];
-const node_static_1 = require$$2__default['default'];
+const http_1 = require$$0__default['default'];
+const node_static_1 = require$$1__default['default'];
+const os_1 = require$$2__default['default'];
 class FileServer {
     constructor() {
         this.server = null;
@@ -29,9 +29,9 @@ class FileServer {
                 fileServer.serve(request, response);
             }).resume();
         }).listen(options.port || 8080);
-        var ifs = os_1.networkInterfaces();
-        var ip = Object.keys(ifs)
-            .map(x => ifs[x].filter((x) => x.family === 'IPv4' && !x.internal)[0])
+        const ifs = os_1.networkInterfaces();
+        const ip = Object.keys(ifs)
+            .map((key) => ifs[key].filter((x) => x.family === 'IPv4' && !x.internal)[0])
             .filter(x => x)[0].address;
         console.log('this.server:');
         console.log(this.server.listening);
