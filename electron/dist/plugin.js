@@ -15,32 +15,35 @@ var require$$2__default = /*#__PURE__*/_interopDefaultLegacy(require$$2);
 var src = {};
 
 Object.defineProperty(src, "__esModule", { value: true });
+const os_1 = require$$0__default['default'];
+const http_1 = require$$1__default['default'];
+const node_static_1 = require$$2__default['default'];
 class FileServer {
     constructor() {
-        this.Os = null;
-        this.Http = null;
-        this.StaticServer = null;
         this.server = null;
-        this.Os = require$$0__default['default'];
-        this.Http = require$$1__default['default'];
-        this.StaticServer = require$$2__default['default'];
     }
     async start(options) {
-        const fileServer = new this.StaticServer.Server(options.path);
-        this.server = this.Http.createServer((request, response) => {
+        const fileServer = new node_static_1.Server(options.path);
+        this.server = http_1.createServer((request, response) => {
             request.addListener('end', () => {
                 fileServer.serve(request, response);
             }).resume();
         }).listen(options.port || 8080);
-        var ifs = this.Os.networkInterfaces();
+        var ifs = os_1.networkInterfaces();
         var ip = Object.keys(ifs)
             .map(x => ifs[x].filter((x) => x.family === 'IPv4' && !x.internal)[0])
             .filter(x => x)[0].address;
+        console.log('this.server:');
+        console.log(this.server.listening);
         return { ip };
     }
     async stop() {
         return new Promise((resolve) => {
-            this.server.close().once('close', () => resolve());
+            this.server.close().once('close', () => {
+                console.log('this.server:');
+                console.log(this.server.listening);
+                resolve();
+            });
         });
     }
 }
